@@ -1,63 +1,29 @@
+<div class="github_info">
+  <h1>Github Dashboard </h1>
 
-<% if current_user %>
-  hello, <%= current_user.nickname %>.
-  <%= link_to "Logout", logout_path, method: :delete %>
-<% else %>
+  <% if current_user %>
+  Hello, <%= current_user.nickname %>! - <%= link_to "Logout", logout_path, method: :delete %>
+  <% else %>
   <%= link_to "Sign in with Github", "/auth/github"%>
-<% end %>
+  <% end %>
 
-<br><br>
+  <div class="user_repos">
+    <h4>User Repos for <%= current_user.nickname %> - Total: <%=  @user_repo_presenter.display_user_repo_count %></h4>
 
-<!-- <img src="https://avatars3.githubusercontent.com/u/25907721?v=4" alt="" style="width:250px;height:128px; padding: 5px;> -->
+    <div class='user_repo_list'>
+      <% @user_repo_presenter.display_user_repos.each do |repo| %>
+        <li><%= @user_repo_presenter.display_titlelized_name(repo.name) %> - <%= @user_repo_presenter.display_updated_date(repo) %></li>
+      <% end %>
+    </div>
+  </div>
 
+  <div class="user_stars">
+    <h4>Starred Repos for <%= current_user.nickname %> - Total: <%= @star_repo_presenter.display_user_starred_repo_count %></h4>
 
-
-<h3>List of Repositories</h3>
-<div class="repos">
-  <ul>
-    <% @dashboard_display.repos.each do |repo| %>
-     <li class="repo"> <%= repo.name %> </li>
-     <% end %>
-  </ul>
+    <div class='user_star_list'>
+      <% @star_repo_presenter.display_user_starred_repos.each do |starred_repo| %>
+        <li><%= starred_repo.name %> - Amount of watchers: <%= starred_repo.stargazers_count %></li>
+      <% end %>
+    </div>
+  </div>
 </div>
-<br><br>
-
-<h3>List of Organizations</h3>
-<div class="organizations">
-  <ul>
-    <% @dashboard_display.orgs.each do |org| %>
-     <li class="organization"> <%= org.login  %> </li>
-     <% end %>
-  </ul>
-</div>
-
-<br><br>
-
-<h3>Basic Info</h3>
- <ul>
-<li> starred count: <%= @dashboard_display.starred_repos %> </li>
- <li>  following: <%= @dashboard_display.following_list %> </li>
- <li>  followers: <%= @dashboard_display.follower_list %> </li>
-</ul>
-
-<br><br>
-
-<h3> Recent Activity </h3>
-
-<ul>
-<% @dashboard_display.my_commits.each do |k,v| %>
-<li> <%= k %> commit from <%= v %> repo  </li>
-<% end %>
-</ul>
-
-
-<br><br>
-<br><br>
-
-<h3> Followers Activity </h3>
-
-<ul>
-<% @dashboard_display.followers_activity.each do |activity| %>
-<p> <strong> <%= activity[:actor][:login] %> </strong> did <em> <%= activity[:type] %> </em> for <%= activity[:repo][:name] %> on <%= activity[:created_at] %> </p>
- <% end %>
-</ul>

@@ -1,8 +1,6 @@
-
 class DashboardController < ApplicationController
-
   def index
-    @dashboard_display = DashboardPresenter.new(current_user)
+    @user_repo_presenter = UserRepoPresenter.new(current_user)
+    @star_repo_presenter = StarRepoPresenter.new(current_user)
   end
-  
 end
